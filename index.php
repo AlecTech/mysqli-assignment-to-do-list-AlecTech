@@ -7,7 +7,26 @@ $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
 if ($connection->connect_error) {
 die('Connection failed: ' . $connection->connect_error);
 }
-echo 'Connected successfully.';
+
+// SET UP YOUR SELECT SQL STATEMENT
+$sql = 'SELECT * FROM todos';
+// QUERY USING YOUR SQL STATEMENT
+$result = $connection->query($sql);
+// TEST TO SEE IF YOUR QUERY RETURNED ANY RESULTS
+if( $result->num_rows > 0) 
+    { //we have results!
+        echo "we have data";
+    }
+    else
+    {
+        echo "we missing data";
+    // while($row = $result->fetch_assoc()) {
+    // DO SOMETHING WITH THE ROW’S DATA
+    }
+    // }
+
+
+
 $connection->close();
 ?>
 
