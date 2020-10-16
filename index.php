@@ -1,3 +1,14 @@
+<?php
+// Create connection
+$connection = new mysqli('127.0.0.1', 'root', '', 'to_do_list');
+// Did we have errors connecting?
+if ($connection->connect_error) {
+die('Connection failed: ' . $connection->connect_error);
+}
+echo 'Connected successfully. Now you can perform queries.';
+$connection->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +31,7 @@
         <div class="todo-item">
             <br>
             <input type="checkbox">
-            <h2>This is</h2>
+            <h2>This is new task</h2>
             <small>date created 1/1/2020</small>
         </div>
     </div>
