@@ -10,4 +10,7 @@ https://trello.com/b/93WzXLsd/alec-to-do-app-php-sql-full-stack
 
 # Citation summary
 
+# CSS borrowed from
+
+https://github.com/codingWithElias/php-to-do-list/blob/master/css/style.css
 
