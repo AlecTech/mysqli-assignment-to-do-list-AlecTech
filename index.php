@@ -8,20 +8,41 @@ if ( $_POST)
         echo '</pre>';
 
         $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
-        if( $connection->connect_errno ) {
+        
+        if( $connection->connect_errno ) 
+        {
             die('Connection failed:' . $connection->connect_error);
         }
+
         //    PREPARED STATEMENT
-        $statement = $connection->prepare("INSERT INTO todos (todoTitle, duedate, catID) VALUES(?,?,?)");
-        $statement->bind_param("ssd", $_POST['title'], $_POST['due_date'], $_POST['category']);
-        if( $statement->execute() ) {
-            echo "Yay! We've added a task to the database";
-        } else {
+        if( $statement = $connection->prepare("INSERT INTO todos (todoTitle, duedate, catID) VALUES(?,?,?)"))
+        {
+            if($statement->bind_param("ssd", $_POST['title'], $_POST['due_date'], $_POST['category']))
+            {
+                if( $statement->execute() ) 
+                {
+                    echo  "Yay! We've added" . $_POST['title'] ." to the database";
+                } 
+                else
+                {
+                    echo "There was a problem with the execute";
+                }
+            }
+            else
+            {
+                echo "There was a problem with the bind_param";
+            }
+        }
+        else 
+        {
             echo "There was a problem adding a task member to the database";
         }
         $statement->close();
         $connection->close();
+
+
 }
+
 
 // $id = null;
 $tasks = null;
@@ -56,6 +77,11 @@ $completed = 'SELECT todos.id, todos.todoTitle, todos.date, todos.catID, todos.c
 
 $overduetasks = 'SELECT todos.id, todos.todoTitle, todos.date, categories.name , todos.checked, todos.duedate FROM todos INNER JOIN categories ON todos.catID = categories.catID WHERE todos.duedate < NOW()';
 
+if( !$result = $connection->query($sql) ) 
+{
+    echo "Something went wrong with the sql query";
+    exit();
+}
 
 // QUERY USING YOUR SQL STATEMENT
 $result = $connection->query($sql);
@@ -252,6 +278,10 @@ $connection->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TO-DO APP</title>
     <link rel="stylesheet" href="css/style.css" >
+    <script>
+        if ( window.history.replaceState ) 
+        {window.history.replaceState( null, null, window.location.href );}
+    </script>
 </head>
 <body>
 <div class="main-section">
@@ -288,6 +318,8 @@ $connection->close();
     </div>
    
 </div>
+
+
     
     
 </body>

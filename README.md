@@ -27,3 +27,8 @@ https://github.com/codingWithElias/php-to-do-list/blob/master/css/style.css
 <!-- instead of having this inside the sprintf 
 //   `<input value="%d" type="checkbox">
                 // $row['checked'],    `          -->
+
+# script to prevent popup asking for resubmission
+
+https://wordpress.stackexchange.com/questions/96564/how-to-stop-form-resubmission-on-page-refresh/96565
+
