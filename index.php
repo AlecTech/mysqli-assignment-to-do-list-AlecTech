@@ -193,7 +193,7 @@ else
                     <h3>%s</h3>
                     <small>%s</small>
                     
-                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> <input type="button" value="delete"> </div>
+                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`"> <span> &emsp; </span> <input type="button" value="delete"> </div>
                 </div>
             </div>
 
@@ -253,7 +253,7 @@ else
                     <h3>%s</h3>
                     <small>%s</small>
                     
-                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> <input type="button" value="delete"> </div>
+                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`">  <span> &emsp; </span> <input type="button" value="delete"> </div>
                 </div>
             </div>
 
@@ -278,10 +278,10 @@ $connection->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TO-DO APP</title>
     <link rel="stylesheet" href="css/style.css" >
-    <script>
+    <!-- <script>
         if ( window.history.replaceState ) 
         {window.history.replaceState( null, null, window.location.href );}
-    </script>
+    </script> -->
 </head>
 <body>
 <div class="main-section">
