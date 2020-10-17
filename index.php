@@ -3,6 +3,7 @@ require 'constants.php';
 
 $tasks = null;
 $cats = null;
+$donetasks = null;
 
 // Create connection
 $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
@@ -15,11 +16,17 @@ die('Connection failed: ' . $connection->connect_error);
 $sql = 'SELECT todos.id, todos.todoTitle, todos.date, todos.catID, todos.checked, todos.duedate FROM todos';
 
 $category_id = 'SELECT categories.catID, categories.name FROM categories';
+
+$completed = 'SELECT todos.id, todos.todoTitle, todos.date, todos.catID, todos.checked, todos.duedate FROM todos WHERE todos.checked = 1';
+
+
 // QUERY USING YOUR SQL STATEMENT
 $result = $connection->query($sql);
 
 $result_category = $connection->query($category_id);
 
+$result_completed = $connection->query($completed);
+// start a bunch of if and while loop statments to output data
 if($result_category->num_rows > 0) 
 {
     while ($row_cat = $result_category->fetch_assoc()) 
@@ -38,27 +45,47 @@ if($result_category->num_rows > 0)
             $row_cat['name']
          );
     }
-           
+}
 
+if($result_completed->num_rows > 0)
+{
+    while ($row_completed = $result_completed->fetch_assoc())
+    {
+        echo '<pre>';
+        print_r($row_completed);
+        echo '</pre>';
+
+        $donetasks .= sprintf
+        ('
+            
+            <div class="show-todo-list">
+                <div class="todo-item">
+                    
+                    <h3>%d</h3>
+                    <div>
+                        <h3>%s</h3>
+                        <input value="checked" type="checkbox" checked>
+                    </div>
+                    <small>%s</small>
+                    <h3>%d</h3>
+                    <small>%s</small>
+                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> <input type="button" value="delete"> </div>
+                </div>
+            </div
+            
+        ',
+            $row_completed['id'],
+            $row_completed['todoTitle'],
+            $row_completed['date'],
+            $row_completed['catID'],
+            $row_completed['duedate'],
+            $row_completed['id'],
+        );
+
+    }
 }
 // TEST TO SEE IF YOUR QUERY RETURNED ANY RESULTS
 
-// if( $result->num_rows > 0) 
-//     { //we have results!
-//          // DO SOMETHING WITH THE ROW’S DATA
-//         while( $row = $result->fetch_assoc() )
-//         {
-//             echo '<pre>';
-//             print_r($row);
-//             echo '</pre>';
-//         }
-//     }
-//     else
-//     {
-//         echo "we missing data";   
-//     }
-
-    // same test
 if (0 === $result->num_rows ) 
 {
     $tasks = "There are no tasks";
@@ -77,8 +104,10 @@ else
                 <div class="todo-item">
                     
                     <h3>%d</h3>
-                    <div class="task-checkbox">
+                    <div>
                     <h3>%s</h3>
+
+                    
                     
 
         
@@ -103,8 +132,8 @@ else
                     <small>%s</small>
                     <h3>%d</h3>
                     <small>%s</small>
-                    <div><input type="button" value="update"> <span> &emsp; </span> <input type="button" value="delete"> </div>
                     
+                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> <input type="button" value="delete"> </div>
                 </div>
             </div>
 
@@ -112,6 +141,7 @@ else
                 $row['date'],
                 $row['catID'],
                 $row['duedate'],
+                $row['id'],
 
         );
     }
@@ -132,7 +162,7 @@ $connection->close();
 <body>
 <div class="main-section">
     <div class="add-section">
-        <form action="#" method="GET" enctype="multipart/form-data">
+        <form action="#" method="POST" enctype="multipart/form-data">
             <input type="text"
                     name="title"
                     placeholder="Enter your task here..."/>
@@ -145,27 +175,34 @@ $connection->close();
             </select>
             <button type="submit"> Add &nbsp; <span>&#43;</span></button>
 
+
+
+            <div class="show-todo-list">
+                <div class="todo-item">
+                    <br>
+                    <h2>Completed ToDo list:</h2>
+                  <?php
+                  echo $donetasks;
+                  
+                  ?>
+                </div>
+            </div>
+            <div class="show-todo-list">
+                <div class="todo-item">
+                    <br>
+                    <h2>Overdue list:</h2>
+                    
+                </div>
+            </div>
+
+            
+
         </form>
+
+        <?php echo $tasks;  ?>
+
     </div>
-    <div class="show-todo-list">
-        <div class="todo-item">
-            <br>
-            <h2>Completed ToDo list:</h2>
-            <input type="checkbox">
-            <h2></h2>
-            <small>date created 1/1/2020</small>
-        </div>
-    </div>
-    <div class="show-todo-list">
-        <div class="todo-item">
-            <br>
-            <h2>Overdue list:</h2>
-            <input type="checkbox">
-            <h2></h2>
-            <small>date created 1/1/2020</small>
-        </div>
-    </div>
-    <?php echo $tasks;  ?>
+   
 </div>
     
     
