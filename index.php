@@ -75,9 +75,11 @@ else
         ('
             <div class="show-todo-list">
                 <div class="todo-item">
-                    <br>
+                    
                     <h3>%d</h3>
+                    <div class="task-checkbox">
                     <h3>%s</h3>
+                    
 
         
         ',
@@ -97,10 +99,12 @@ else
 
          $tasks .= sprintf
          ('
-
+                    </div>
                     <small>%s</small>
                     <h3>%d</h3>
                     <small>%s</small>
+                    <div><input type="button" value="update"> <span> &emsp; </span> <input type="button" value="delete"> </div>
+                    
                 </div>
             </div>
 

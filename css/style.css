@@ -9,6 +9,12 @@ body {
     margin: 0px;
     box-sizing: border-box;
   }
+ 
+  .task-checkbox{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
   
   .main-section {
     background: transparent;
