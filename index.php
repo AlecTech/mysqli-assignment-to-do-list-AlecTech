@@ -12,7 +12,7 @@ if ($connection->connect_error) {
 die('Connection failed: ' . $connection->connect_error);
 }
 // SET UP YOUR SELECT SQL STATEMENT
-$sql = 'SELECT todos.id, todos.todoTitle, todos.date, todos.catID, todos.checked FROM todos';
+$sql = 'SELECT todos.id, todos.todoTitle, todos.date, todos.catID, todos.checked, todos.duedate FROM todos';
 
 $category_id = 'SELECT categories.catID, categories.name FROM categories';
 // QUERY USING YOUR SQL STATEMENT
@@ -61,7 +61,7 @@ if($result_category->num_rows > 0)
     // same test
 if (0 === $result->num_rows ) 
 {
-    $tasks = "There are no new tasks";
+    $tasks = "There are no tasks";
 }
 else
 {
@@ -100,12 +100,14 @@ else
 
                     <small>%s</small>
                     <h3>%d</h3>
+                    <small>%s</small>
                 </div>
             </div>
 
         ',
                 $row['date'],
                 $row['catID'],
+                $row['duedate'],
 
         );
     }
@@ -144,6 +146,16 @@ $connection->close();
     <div class="show-todo-list">
         <div class="todo-item">
             <br>
+            <h2>Completed ToDo list:</h2>
+            <input type="checkbox">
+            <h2></h2>
+            <small>date created 1/1/2020</small>
+        </div>
+    </div>
+    <div class="show-todo-list">
+        <div class="todo-item">
+            <br>
+            <h2>Overdue list:</h2>
             <input type="checkbox">
             <h2></h2>
             <small>date created 1/1/2020</small>
