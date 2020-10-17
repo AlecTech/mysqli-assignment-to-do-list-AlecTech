@@ -1,10 +1,44 @@
 <?php
 require 'constants.php';
 
+if ( $_POST)
+{
+        echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
+
+        $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
+        if( $connection->connect_errno ) {
+            die('Connection failed:' . $connection->connect_error);
+        }
+        //    PREPARED STATEMENT
+        $statement = $connection->prepare("INSERT INTO todos (todoTitle, duedate, catID) VALUES(?,?,?)");
+        $statement->bind_param("ssd", $_POST['title'], $_POST['due_date'], $_POST['category']);
+        if( $statement->execute() ) {
+            echo "Yay! We've added a task to the database";
+        } else {
+            echo "There was a problem adding a task member to the database";
+        }
+        $statement->close();
+        $connection->close();
+}
+
+// $id = null;
 $tasks = null;
 $cats = null;
 $donetasks = null;
 $overdues = null;
+
+// if( !isset( $_GET['id'] ) || $_GET['id'] === "" ) {
+//     echo "You have reached this page by mistake.";
+//     exit();
+// }
+
+// if( filter_var($_GET['id'], FILTER_VALIDATE_INT) ) {
+//     $id = $_GET['id'];
+// } else {
+//     die("An incorrect value for ID was passed");
+// }
 
 // Create connection
 $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
@@ -14,7 +48,7 @@ if ($connection->connect_error) {
 die('Connection failed: ' . $connection->connect_error);
 }
 // SET UP YOUR SELECT SQL STATEMENT
-$sql = 'SELECT todos.id, todos.todoTitle, todos.date, categories.name , todos.checked, todos.duedate FROM todos INNER JOIN categories ON todos.catID = categories.catID';
+$sql = 'SELECT todos.id, todos.todoTitle, todos.date, categories.name , todos.checked, todos.duedate FROM todos INNER JOIN categories ON todos.catID = categories.catID ORDER BY todos.id DESC';
 
 $category_id = 'SELECT categories.catID, categories.name FROM categories';
 
@@ -37,9 +71,9 @@ if($result_category->num_rows > 0)
 {
     while ($row_cat = $result_category->fetch_assoc()) 
     {
-        echo '<pre>';
-        print_r($row_cat);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($row_cat);
+        // echo '</pre>';
 
         $cats .= sprintf
         ('
@@ -57,9 +91,9 @@ if($result_completed->num_rows > 0)
 {
     while ($row_completed = $result_completed->fetch_assoc())
     {
-        echo '<pre>';
-        print_r($row_completed);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($row_completed);
+        // echo '</pre>';
 
         $donetasks .= sprintf
         ('
@@ -99,9 +133,9 @@ else
 {
     while( $row_overdue = $result_overdue->fetch_assoc() )
     {
-        echo '<pre>';
-        print_r($row_overdue);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($row_overdue);
+        // echo '</pre>';
      
         $overdues .= sprintf
         ('
@@ -158,9 +192,9 @@ else
 {
     while( $row = $result->fetch_assoc() )
     {
-        echo '<pre>';
-        print_r($row);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($row);
+        // echo '</pre>';
      
         $tasks .= sprintf
         ('
