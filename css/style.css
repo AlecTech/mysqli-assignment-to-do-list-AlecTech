@@ -141,6 +141,12 @@ body {
     color: #999 !important;
     text-decoration: line-through;
   }
+
+  #overdue {
+    background-color: rgb(252, 4, 4);
+
+    font-weight: 600;
+  }
   
   .todo-item input {
     margin: 0px 5px;

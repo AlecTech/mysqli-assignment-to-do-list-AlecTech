@@ -4,6 +4,7 @@ require 'constants.php';
 $tasks = null;
 $cats = null;
 $donetasks = null;
+$overdues = null;
 
 // Create connection
 $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
@@ -19,6 +20,8 @@ $category_id = 'SELECT categories.catID, categories.name FROM categories';
 
 $completed = 'SELECT todos.id, todos.todoTitle, todos.date, todos.catID, todos.checked, todos.duedate FROM todos WHERE todos.checked = 1';
 
+$overduetasks = 'SELECT todos.id, todos.todoTitle, todos.date, categories.name , todos.checked, todos.duedate FROM todos INNER JOIN categories ON todos.catID = categories.catID WHERE todos.duedate < NOW()';
+
 
 // QUERY USING YOUR SQL STATEMENT
 $result = $connection->query($sql);
@@ -26,7 +29,10 @@ $result = $connection->query($sql);
 $result_category = $connection->query($category_id);
 
 $result_completed = $connection->query($completed);
+
+$result_overdue = $connection->query($overduetasks);
 // start a bunch of if and while loop statments to output data
+// this 1st if while statment is for categories to show inside select option (dropdown menu)
 if($result_category->num_rows > 0) 
 {
     while ($row_cat = $result_category->fetch_assoc()) 
@@ -46,7 +52,7 @@ if($result_category->num_rows > 0)
          );
     }
 }
-
+// 2nd if while for the completed section
 if($result_completed->num_rows > 0)
 {
     while ($row_completed = $result_completed->fetch_assoc())
@@ -84,8 +90,66 @@ if($result_completed->num_rows > 0)
 
     }
 }
-// TEST TO SEE IF YOUR QUERY RETURNED ANY RESULTS
+// 3rd if while for the overdue section
+if (0 === $result_overdue->num_rows ) 
+{
+    $overdues = "There are no over due tasks";
+}
+else
+{
+    while( $row_overdue = $result_overdue->fetch_assoc() )
+    {
+        echo '<pre>';
+        print_r($row_overdue);
+        echo '</pre>';
+     
+        $overdues .= sprintf
+        ('
+            <div class="show-todo-list">
+                <div class="todo-item">
+                    
+                    <h3>%d</h3>
+                    <div>
+                    <h3 id="overdue">%s</h3>
 
+        ',
+                $row_overdue['id'],
+                $row_overdue['todoTitle'],
+            
+         );
+
+         if ($row_overdue['checked'] == 1)
+         {
+             $overdues .= '<input value="'.$row_overdue['checked'].'" type="checkbox" checked>';
+         }
+         else
+         {
+            $overdues .= '<input value="'.$row_overdue['checked'].'" type="checkbox">';
+         }
+         $overdues .= sprintf
+         ('
+                    </div>
+                    <small>%s</small>
+                    <h3>%s</h3>
+                    <small>%s</small>
+                    
+                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> <input type="button" value="delete"> </div>
+                </div>
+            </div>
+
+        ',
+                $row_overdue['date'],
+                $row_overdue['name'],
+                $row_overdue['duedate'],
+                $row_overdue['id'],
+
+        );
+    }
+}
+
+
+// TEST TO SEE IF YOUR QUERY RETURNED ANY RESULTS
+// 4th if while for the all results from the sql db
 if (0 === $result->num_rows ) 
 {
     $tasks = "There are no tasks";
@@ -180,7 +244,7 @@ $connection->close();
             <div class="show-todo-list">
                 <div class="todo-item">
                     <h2>Overdue list:</h2>
-                    
+                    <?php echo $overdues; ?>
                 </div>
             </div>
         </form>
