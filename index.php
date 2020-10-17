@@ -13,7 +13,7 @@ if ($connection->connect_error) {
 die('Connection failed: ' . $connection->connect_error);
 }
 // SET UP YOUR SELECT SQL STATEMENT
-$sql = 'SELECT todos.id, todos.todoTitle, todos.date, todos.catID, todos.checked, todos.duedate FROM todos';
+$sql = 'SELECT todos.id, todos.todoTitle, todos.date, categories.name , todos.checked, todos.duedate FROM todos INNER JOIN categories ON todos.catID = categories.catID';
 
 $category_id = 'SELECT categories.catID, categories.name FROM categories';
 
@@ -107,10 +107,6 @@ else
                     <div>
                     <h3>%s</h3>
 
-                    
-                    
-
-        
         ',
                 $row['id'],
                 $row['todoTitle'],
@@ -130,7 +126,7 @@ else
          ('
                     </div>
                     <small>%s</small>
-                    <h3>%d</h3>
+                    <h3>%s</h3>
                     <small>%s</small>
                     
                     <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> <input type="button" value="delete"> </div>
@@ -139,7 +135,7 @@ else
 
         ',
                 $row['date'],
-                $row['catID'],
+                $row['name'],
                 $row['duedate'],
                 $row['id'],
 
@@ -175,28 +171,18 @@ $connection->close();
             </select>
             <button type="submit"> Add &nbsp; <span>&#43;</span></button>
 
-
-
             <div class="show-todo-list">
                 <div class="todo-item">
-                    <br>
                     <h2>Completed ToDo list:</h2>
-                  <?php
-                  echo $donetasks;
-                  
-                  ?>
+                    <?php echo $donetasks;?>
                 </div>
             </div>
             <div class="show-todo-list">
                 <div class="todo-item">
-                    <br>
                     <h2>Overdue list:</h2>
                     
                 </div>
             </div>
-
-            
-
         </form>
 
         <?php echo $tasks;  ?>
