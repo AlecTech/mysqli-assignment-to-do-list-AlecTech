@@ -34,6 +34,14 @@ if( $_POST ) {
         exit("There was a problem with the prepare statement");
     }
     $statement->close();
+
+    // $message = "UPDATED OK!";
+    // echo "<script type='text/javascript'>alert('$message');</script>"; 
+
+    //after update redirect back to the ToDo List index.php
+    header( "refresh:4;url=index.php" );
+    echo ' You successfully update your task.. Wait 4 secs to be redirected.';
+    // header ('Location: index.php');
 }
 
 // echo '<pre>';
@@ -102,7 +110,9 @@ if( $_POST ) {
 </head>
 <body>
     <h1> Edit Todo Task</h1>
-    <?php if($message) echo $message; ?>
+   
+   
+
     <form action="#" method="POST" enctype="multipart/form-data">
     <h3>Id of the task you are trying to edit</h3>
     <?php echo $show_edit_id; ?>

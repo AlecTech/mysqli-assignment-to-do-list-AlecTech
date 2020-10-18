@@ -135,7 +135,8 @@ if($result_completed->num_rows > 0)
                     <small>%s</small>
                     <h3>%d</h3>
                     <small>%s</small>
-                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> <input type="button" value="delete"> </div>
+                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> 
+                    <input type="button" value="delete" onclick="window.location.href=`delete.php?id=%d`"> </div>
                 </div>
             </div
             
@@ -145,6 +146,7 @@ if($result_completed->num_rows > 0)
             $row_completed['date'],
             $row_completed['catID'],
             $row_completed['duedate'],
+            $row_completed['id'],
             $row_completed['id'],
         );
 
@@ -193,7 +195,8 @@ else
                     <h3>%s</h3>
                     <small>%s</small>
                     
-                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`"> <span> &emsp; </span> <input type="button" value="delete"> </div>
+                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`"> <span> &emsp; </span> 
+                    <input type="button" value="delete" onclick="window.location.href=`delete.php?id=%d`"> </div>
                 </div>
             </div>
 
@@ -201,6 +204,7 @@ else
                 $row_overdue['date'],
                 $row_overdue['name'],
                 $row_overdue['duedate'],
+                $row_overdue['id'],
                 $row_overdue['id'],
 
         );
@@ -257,7 +261,8 @@ else
                     <small>%s</small>
                     <h3>%s</h3>
                     <small>%s</small>
-                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`">  <span> &emsp; </span> <input type="button" value="delete"> </div>
+                    <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`">  <span> &emsp; </span> 
+                    <input type="button" value="delete" onclick="window.location.href=`delete.php?id=%d`"> </div>
                 </div>
             </div>
 
@@ -265,6 +270,7 @@ else
                 $row['date'],
                 $row['name'],
                 $row['duedate'],
+                $row['id'],
                 $row['id'],
 
         );

@@ -15,14 +15,15 @@ https://trello.com/b/93WzXLsd/alec-to-do-app-php-sql-full-stack
 https://github.com/codingWithElias/php-to-do-list/blob/master/css/style.css
 
 # if statment to check if checkbox is 1 or 0 (by Tammy Valgardson)
-       if ($row['checked'] == 1)
+
+      `if ($row['checked'] == 1)
          {
              $tasks .= '<input value="'.$row['checked'].'" type="checkbox" checked>';
          }
          else
          {
             $tasks .= '<input value="'.$row['checked'].'" type="checkbox">';
-         }
+         }` 
 
 <!-- instead of having this inside the sprintf 
 //   `<input value="%d" type="checkbox">
@@ -63,3 +64,7 @@ https://wordpress.stackexchange.com/questions/96564/how-to-stop-form-resubmissio
     </p>
     </form>`
     
+   # Delayed redirection (by Marcel G)
+
+    https://www.php.net/manual/en/function.header.php
+
