@@ -1,5 +1,27 @@
 <?php
+
 require 'constants.php';
+$id = null;
+
+echo '<pre>';
+var_dump($_POST);
+echo '</pre>';
+
+  // If we don't have a staff id, do not continue
+  if( !isset($_GET['id']) || $_GET['id'] === "" ) 
+  {
+    exit("You have reached this page by mistake");
+  }
+
+    // If the staff id is not an INT, do not continue
+    if( filter_var($_GET['id'], FILTER_VALIDATE_INT ) ) 
+    {
+        $id = $_GET['id'];
+    } 
+    else 
+    {
+        exit("An incorrect value was passed");
+    }
 
 ?>
 

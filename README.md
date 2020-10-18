@@ -14,7 +14,7 @@ https://trello.com/b/93WzXLsd/alec-to-do-app-php-sql-full-stack
 
 https://github.com/codingWithElias/php-to-do-list/blob/master/css/style.css
 
-# if statment to check if checkbox is 1 or 0
+# if statment to check if checkbox is 1 or 0 (by Tammy Valgardson)
        if ($row['checked'] == 1)
          {
              $tasks .= '<input value="'.$row['checked'].'" type="checkbox" checked>';

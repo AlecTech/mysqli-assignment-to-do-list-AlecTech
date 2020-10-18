@@ -226,9 +226,10 @@ else
         ('
             <div class="show-todo-list">
                 <div class="todo-item">
-                    
+
+                    <form action="status.php" method="POST">
                     <h3>%d</h3>
-                    <div>
+                   
                     <h3>%s</h3>
 
         ',
@@ -239,20 +240,23 @@ else
 
          if ($row['checked'] == 1)
          {
-             $tasks .= '<input value="'.$row['checked'].'" type="checkbox" checked>';
+             $tasks .= '
+             <input value="'.$row['checked'].'" name="'.$row['id'].'" type="hidden">
+             <input value="'.$row['checked'].'" type="checkbox" checked>';
          }
          else
          {
-            $tasks .= '<input value="'.$row['checked'].'" type="checkbox">';
+            $tasks .= '
+            <input value="'.$row['checked'].'" name="'.$row['id'].'" type="hidden">
+            <input value="'.$row['checked'].'" type="checkbox">';
          }
 
          $tasks .= sprintf
          ('
-                    </div>
+                    </form>
                     <small>%s</small>
                     <h3>%s</h3>
                     <small>%s</small>
-                    
                     <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`">  <span> &emsp; </span> <input type="button" value="delete"> </div>
                 </div>
             </div>
@@ -278,10 +282,10 @@ $connection->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TO-DO APP</title>
     <link rel="stylesheet" href="css/style.css" >
-    <!-- <script>
+    <script>
         if ( window.history.replaceState ) 
         {window.history.replaceState( null, null, window.location.href );}
-    </script> -->
+    </script>
 </head>
 <body>
 <div class="main-section">
@@ -319,7 +323,15 @@ $connection->close();
    
 </div>
 
+<script>
+    const checkboxes = document.querySelectorAll('input[type=checkbox]');
+    checkboxes.forEach(ch => {
+        ch.onclick = function (){
+            this.parentNode.submit();
+        };
+    })
 
+</script>
     
     
 </body>
