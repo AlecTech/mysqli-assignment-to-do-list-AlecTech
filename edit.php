@@ -10,11 +10,30 @@ $show_edit_date = null;
 $edit_duedate = null;
 $edit_catID = null;
 
+$message = null;
+
 // make a connection and test if failed
 $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
 if( $connection->connect_errno ) 
 {
     die('Connection failed:' . $connection->connect_error);
+}
+// after GET displays data we updated it and now POST will push new values back onto SQL database
+if( $_POST ) {
+    if( $statement = $connection->prepare("UPDATE todos SET todoTitle=?, duedate=? WHERE todos.id=?")) {
+        if( $statement->bind_param("ssi", $_POST['edit_todoTitle'], $_POST['edit_duedate'], $_POST['id']) ) {
+            if( $statement->execute() ) {
+               $message = "You have updated successfully";
+            } else {
+                exit("There was a problem with the execute");
+            }
+        } else {
+            exit("There was a problem with the bind_param");
+        }
+    } else {
+        exit("There was a problem with the prepare statement");
+    }
+    $statement->close();
 }
 
 // echo '<pre>';
@@ -83,46 +102,25 @@ if( $connection->connect_errno )
 </head>
 <body>
     <h1> Edit Todo Task</h1>
-
+    <?php if($message) echo $message; ?>
     <form action="#" method="POST" enctype="multipart/form-data">
-
+    <h3>Id of the task you are trying to edit</h3>
     <?php echo $show_edit_id; ?>
 
     <p>
-        <label for="todoTitle">Todo Task</label>
-        <input type="text" name="todoTitle" id="todoTitle" value="<?php echo $edit_todoTitle; ?>">
-    </p>
-
-    <p>
-        <h3>Status Checked</h3>
-        <input type="hidden" name="<?php echo $show_edit_id; ?>" id="check-status" value="<?php echo $edit_checked; ?>">
-        <input value="<?php echo $edit_checked; ?>" type="checkbox" >
+        <label for="edit_todoTitle">Todo Task</label>
+        <input type="text" name="edit_todoTitle" id="edit_todoTitle" value="<?php echo $edit_todoTitle; ?>">
     </p>
 
     <p>
         <h3>Date</h3>
      <?php echo $show_edit_date; ?>
-  
     </p>
 
     <p>
-        <label for="duedate">Edit Due Date</label>
-        <input type="date" name="duedate" id="duedate" value="<?php echo $edit_duedate; ?>" min="2020-09-01" max="2021-09-01">
-        
-    </p>
-
-    <p>
-        
-        <label for="catID">Edit Category</label>
-        <input type="number" name="catID" id="catID" value="<?php echo $edit_catID; ?>" min="1" max="2">
-        <small>Note: to edit category type 1 for Chores or 2 for Homework</small>
-<!-- 
-        <lable for="category"> Task Category</lable>
-            <select name="category" id="category">
-                <option value="">select category</option>
-
-                
-            </select> -->
+        <label for="edit_duedate">Edit Due Date</label>
+        <input type="date" name="edit_duedate" id="edit_duedate" value="<?php echo $edit_duedate; ?>" min="2020-09-01" max="2021-09-01">
+        <input type="hidden" name="id" value="<?php echo $show_edit_id ?>">
     </p>
 
     <p>
