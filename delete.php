@@ -1,8 +1,5 @@
 <?php
 require 'constants.php';
-// echo '<pre>';
-// var_dump($_POST);
-// echo '</pre>';
 
 $id = null;
 $delete_todoTitle = null;
@@ -65,8 +62,8 @@ if( $_POST ) {
             exit("There was a problem deleting this task");
         }
     } 
-    header( "refresh:4;url=index.php" );
-    echo ' Wait 4 secs to be redirected.';
+    header( "refresh:3;url=index.php" );
+    echo ' Wait 3 secs to be redirected.';
 }
 $connection->close();
 

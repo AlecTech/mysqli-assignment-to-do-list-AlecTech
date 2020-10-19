@@ -3,9 +3,9 @@ require 'constants.php';
 
 if ( $_POST)
 {
-        echo '<pre>';
-        print_r($_POST);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($_POST);
+        // echo '</pre>';
 
         $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
         
@@ -39,27 +39,12 @@ if ( $_POST)
         }
         $statement->close();
         $connection->close();
-
-
 }
-
-
 // $id = null;
 $tasks = null;
 $cats = null;
 $donetasks = null;
 $overdues = null;
-
-// if( !isset( $_GET['id'] ) || $_GET['id'] === "" ) {
-//     echo "You have reached this page by mistake.";
-//     exit();
-// }
-
-// if( filter_var($_GET['id'], FILTER_VALIDATE_INT) ) {
-//     $id = $_GET['id'];
-// } else {
-//     die("An incorrect value for ID was passed");
-// }
 
 // Create connection
 $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
@@ -68,13 +53,13 @@ $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
 if ($connection->connect_error) {
 die('Connection failed: ' . $connection->connect_error);
 }
-// SET UP YOUR SELECT SQL STATEMENT
+// SET UP YOUR SELECT SQL STATEMENT for all fields to show up in DESC order based on id so that most recent at the top
 $sql = 'SELECT todos.id, todos.todoTitle, todos.date, categories.name , todos.checked, todos.duedate FROM todos INNER JOIN categories ON todos.catID = categories.catID ORDER BY todos.id DESC';
-
+// SET UP YOUR SELECT SQL STATEMENT for categories ids to reflect inside select option
 $category_id = 'SELECT categories.catID, categories.name FROM categories';
-
-$completed = 'SELECT todos.id, todos.todoTitle, todos.date, todos.catID, todos.checked, todos.duedate FROM todos WHERE todos.checked = 1';
-
+// SET UP YOUR SELECT SQL STATEMENT for done tasks to reflect inside "completed" section
+$completed = 'SELECT todos.id, todos.todoTitle, todos.date, categories.name, todos.checked, todos.duedate FROM todos INNER JOIN categories ON todos.catID = categories.catID WHERE todos.checked = 1';
+// SET UP YOUR SELECT SQL STATEMENT for overdue tasks to reflect inside "overdue" section
 $overduetasks = 'SELECT todos.id, todos.todoTitle, todos.date, categories.name , todos.checked, todos.duedate FROM todos INNER JOIN categories ON todos.catID = categories.catID WHERE todos.duedate < NOW()';
 
 if( !$result = $connection->query($sql) ) 
@@ -92,15 +77,11 @@ $result_completed = $connection->query($completed);
 
 $result_overdue = $connection->query($overduetasks);
 // start a bunch of if and while loop statments to output data
-// this 1st if while statment is for categories to show inside select option (dropdown menu)
+// this 1st if-while statment is for categories to show inside select option (dropdown menu)
 if($result_category->num_rows > 0) 
 {
     while ($row_cat = $result_category->fetch_assoc()) 
     {
-        // echo '<pre>';
-        // print_r($row_cat);
-        // echo '</pre>';
-
         $cats .= sprintf
         ('
             <option value="%s">
@@ -112,28 +93,22 @@ if($result_category->num_rows > 0)
          );
     }
 }
-// 2nd if while for the completed section
+// 2nd if-while for the completed section
 if($result_completed->num_rows > 0)
 {
     while ($row_completed = $result_completed->fetch_assoc())
     {
-        // echo '<pre>';
-        // print_r($row_completed);
-        // echo '</pre>';
-
         $donetasks .= sprintf
         ('
-            
             <div class="show-todo-list">
-                <div class="todo-item">
-                    
+                <div class="todo-item">  
                     <h3>%d</h3>
                     <div>
                         <h3>%s</h3>
-                        <input value="checked" type="checkbox" checked>
+                     
                     </div>
                     <small>%s</small>
-                    <h3>%d</h3>
+                    <h3>%s</h3>
                     <small>%s</small>
                     <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> 
                     <input type="button" value="delete" onclick="window.location.href=`delete.php?id=%d`"> </div>
@@ -144,7 +119,7 @@ if($result_completed->num_rows > 0)
             $row_completed['id'],
             $row_completed['todoTitle'],
             $row_completed['date'],
-            $row_completed['catID'],
+            $row_completed['name'],
             $row_completed['duedate'],
             $row_completed['id'],
             $row_completed['id'],
@@ -152,7 +127,7 @@ if($result_completed->num_rows > 0)
 
     }
 }
-// 3rd if while for the overdue section
+// 3rd if-while for the overdue section
 if (0 === $result_overdue->num_rows ) 
 {
     $overdues = "There are no over due tasks";
@@ -161,17 +136,12 @@ else
 {
     while( $row_overdue = $result_overdue->fetch_assoc() )
     {
-        // echo '<pre>';
-        // print_r($row_overdue);
-        // echo '</pre>';
-     
         $overdues .= sprintf
         ('
             <div class="show-todo-list">
                 <div class="todo-item">
-                    
+                <form action="status.php" method="POST">     
                     <h3>%d</h3>
-                    <div>
                     <h3 id="overdue">%s</h3>
 
         ',
@@ -182,15 +152,19 @@ else
 
          if ($row_overdue['checked'] == 1)
          {
-             $overdues .= '<input value="'.$row_overdue['checked'].'" type="checkbox" checked>';
+             $overdues .= '
+             <input value="'.$row_overdue['checked'].'" name="'.$row_overdue['id'].'" type="hidden" >
+             <input value="'.$row_overdue['checked'].'" type="checkbox" checked >';
          }
          else
          {
-            $overdues .= '<input value="'.$row_overdue['checked'].'" type="checkbox">';
+            $overdues .= '
+            <input value="'.$row_overdue['checked'].'" name="'.$row_overdue['id'].'" type="hidden" >
+            <input value="'.$row_overdue['checked'].'" type="checkbox" >';
          }
          $overdues .= sprintf
          ('
-                    </div>
+                    </form>
                     <small>%s</small>
                     <h3>%s</h3>
                     <small>%s</small>
@@ -210,8 +184,6 @@ else
         );
     }
 }
-
-
 // TEST TO SEE IF YOUR QUERY RETURNED ANY RESULTS
 // 4th if while for the all results from the sql db
 if (0 === $result->num_rows ) 
@@ -222,20 +194,13 @@ else
 {
     while( $row = $result->fetch_assoc() )
     {
-        // echo '<pre>';
-        // print_r($row);
-        // echo '</pre>';
-     
         $tasks .= sprintf
         ('
             <div class="show-todo-list">
                 <div class="todo-item">
-
                     <form action="status.php" method="POST">
-                    <h3>%d</h3>
-                   
-                    <h3>%s</h3>
-
+                        <h3>%d</h3>
+                        <h3>%s</h3>
         ',
                 $row['id'],
                 $row['todoTitle'],
@@ -257,7 +222,6 @@ else
 
          $tasks .= sprintf
          ('
-                    
                     </form>
                     <small>%s</small>
                     <h3>%s</h3>
@@ -266,7 +230,6 @@ else
                     <input type="button" value="delete" onclick="window.location.href=`delete.php?id=%d`"> </div>
                 </div>
             </div>
-
         ',
                 $row['date'],
                 $row['name'],
@@ -277,7 +240,6 @@ else
         );
     }
 }
-
 
 $connection->close();
 ?>
@@ -325,11 +287,9 @@ $connection->close();
         </form>
 
         <?php echo $tasks;  ?>
-
-    </div>
-   
+    </div> 
 </div>
-
+<!-- js to listen for checked boxes onclick and redirect into status.php page for a split seconde logic to update sql db and redirect user back to the index.php -->
 <script>
     const checkboxes = document.querySelectorAll('input[type=checkbox]');
     checkboxes.forEach(ch => {
@@ -337,7 +297,6 @@ $connection->close();
             this.parentNode.submit();
         };
     })
-
 </script>
 
 </body>

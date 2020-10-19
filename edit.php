@@ -49,11 +49,10 @@ if( $_POST )
     // echo "<script type='text/javascript'>alert('$message');</script>"; 
 
     //after update redirect back to the ToDo List index.php
-    header( "refresh:4;url=index.php" );
-    echo ' You successfully update your task.. Wait 4 secs to be redirected.';
+    header( "refresh:3;url=index.php" );
+    echo ' You successfully update your task.. Wait 3 secs to be redirected.';
     // header ('Location: index.php');
 }
-
 // echo '<pre>';
 // var_dump($_POST);
 // echo '</pre>';
@@ -78,38 +77,27 @@ if( $_POST )
     $sql = "SELECT * FROM todos WHERE todos.id = $id";
     // assign the data from sql to the $result (inside is just an object with our query do var dump to understand)
     $result = $connection->query($sql);
-    echo '<pre>';
-    var_dump($result);
-    echo '</pre>';
     if( !$result ) 
     {
         exit('There was a problem fetching results');
     }
     if( 0 === $result->num_rows ) 
-    {
-       
+    { 
         exit("There was no task with that ID");
     }
     // pre-populate the selected task that we want to update/edit
     // only now inside $row you will see our todos data like we used to see it in the table
     while( $row = $result->fetch_assoc() ) 
     {
-         echo '<pre>';
-        var_dump($row);
-        echo '</pre>';
-
         $show_edit_id = $row['id'];
         $edit_todoTitle = $row['todoTitle'];
         $edit_checked = $row['checked'];
         $show_edit_date = $row['date'];
         $edit_duedate = $row['duedate'];
         $edit_catID = $row['catID'];
-
     }
     $connection->close();
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">

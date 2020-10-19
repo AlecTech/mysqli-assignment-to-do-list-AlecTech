@@ -1,5 +1,5 @@
 # Name of DB file
-***todos***
+***to_do_list***
 
 # Trello Link
 

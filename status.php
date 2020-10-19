@@ -1,7 +1,4 @@
 <?php
-    echo '<pre>';
-    var_dump($_POST);
-    echo '</pre>';
     
     require 'constants.php';
 
@@ -23,11 +20,7 @@
         $id = array_key_first($my_post);
         // just get the value without specifing key( since there is only one entry this method works)
         $status_checked = current( $my_post);
-
-        //  echo '<pre>';
-        // print_r($status_checked);
-        // echo '</pre>';
-
+        // invert value of status
         if($status_checked == 0)
         {
             $status_checked ++;
@@ -37,17 +30,10 @@
             $status_checked --;
         }
         // echo '<pre>';
-        // print_r($my_post);
-        // echo '</pre>';
-
-        // echo '<pre>';
-        // print_r($id);
-        // echo '</pre>';
-
-        // echo '<pre>';
         // print_r($status_checked);
         // echo '</pre>';
 
+        // UPDATE SQL database with inverted values
         if ($statement = $connection->prepare("UPDATE todos SET todos.checked=? WHERE todos.id=?") )
         {
             if( $statement->bind_param("dd", $status_checked, $id) ) 
@@ -66,7 +52,6 @@
             exit("There was a problem with the bind_param");
             }
         } 
-                
             else 
             {
                 exit("There was a problem with the prepare statement");
@@ -78,16 +63,3 @@
             header ('Location: index.php');
     }
   ?>      
-        
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Just for Task Status</title>
-    </head>
-    <body>
-        
-    
-    </body>
-    </html>
