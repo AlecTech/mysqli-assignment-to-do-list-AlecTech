@@ -19,18 +19,28 @@ if( $connection->connect_errno )
     die('Connection failed:' . $connection->connect_error);
 }
 // after GET displays data we updated it and now POST will push new values back onto SQL database
-if( $_POST ) {
-    if( $statement = $connection->prepare("UPDATE todos SET todoTitle=?, duedate=? WHERE todos.id=?")) {
-        if( $statement->bind_param("ssi", $_POST['edit_todoTitle'], $_POST['edit_duedate'], $_POST['id']) ) {
-            if( $statement->execute() ) {
+if( $_POST ) 
+{
+    if( $statement = $connection->prepare("UPDATE todos SET todoTitle=?, duedate=? WHERE todos.id=?")) 
+    {
+        if( $statement->bind_param("ssi", $_POST['edit_todoTitle'], $_POST['edit_duedate'], $_POST['id']) ) 
+        {
+            if( $statement->execute() ) 
+            {
                $message = "You have updated successfully";
-            } else {
+            } 
+            else 
+            {
                 exit("There was a problem with the execute");
             }
-        } else {
+        } 
+        else 
+        {
             exit("There was a problem with the bind_param");
         }
-    } else {
+    } 
+    else 
+    {
         exit("There was a problem with the prepare statement");
     }
     $statement->close();

@@ -138,7 +138,7 @@ if($result_completed->num_rows > 0)
                     <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> 
                     <input type="button" value="delete" onclick="window.location.href=`delete.php?id=%d`"> </div>
                 </div>
-            </div
+            </div>
             
         ',
             $row_completed['id'],
@@ -245,8 +245,8 @@ else
          if ($row['checked'] == 1)
          {
              $tasks .= '
-             <input value="'.$row['checked'].'" name="'.$row['id'].'" type="hidden">
-             <input value="'.$row['checked'].'" type="checkbox" checked>';
+             <input value="'.$row['checked'].'" name="'.$row['id'].'" type="hidden" >
+             <input value="'.$row['checked'].'" type="checkbox" checked >';
          }
          else
          {
@@ -257,6 +257,7 @@ else
 
          $tasks .= sprintf
          ('
+                    
                     </form>
                     <small>%s</small>
                     <h3>%s</h3>
@@ -338,7 +339,6 @@ $connection->close();
     })
 
 </script>
-    
-    
+
 </body>
 </html>

@@ -1,12 +1,15 @@
 # Name of DB file
+***todos***
 
 # Trello Link
 
 https://trello.com/b/93WzXLsd/alec-to-do-app-php-sql-full-stack
 
 # ERD Diagram
+![Getting Started](./erd_Diagram/todos_DataBase.png)
 
 # SQL file
+Included
 
 # Citation summary
 

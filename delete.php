@@ -1,8 +1,8 @@
 <?php
 require 'constants.php';
-echo '<pre>';
-var_dump($_POST);
-echo '</pre>';
+// echo '<pre>';
+// var_dump($_POST);
+// echo '</pre>';
 
 $id = null;
 $delete_todoTitle = null;
