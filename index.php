@@ -107,9 +107,9 @@ if($result_completed->num_rows > 0)
                         <h3>%s</h3>
                      
                     </div>
-                    <small>%s</small>
-                    <h3>%s</h3>
-                    <small>%s</small>
+                    <small>Input Date: %s</small>
+                    <h3>Category: %s</h3>
+                    <small>DueDate: %s</small>
                     <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`" > <span> &emsp; </span> 
                     <input type="button" value="delete" onclick="window.location.href=`delete.php?id=%d`"> </div>
                 </div>
@@ -165,10 +165,9 @@ else
          $overdues .= sprintf
          ('
                     </form>
-                    <small>%s</small>
-                    <h3>%s</h3>
-                    <small>%s</small>
-                    
+                    <small>Input Date: %s</small>
+                    <h3>Category: %s</h3>
+                    <small>DueDate: %s</small>
                     <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`"> <span> &emsp; </span> 
                     <input type="button" value="delete" onclick="window.location.href=`delete.php?id=%d`"> </div>
                 </div>
@@ -223,9 +222,9 @@ else
          $tasks .= sprintf
          ('
                     </form>
-                    <small>%s</small>
-                    <h3>%s</h3>
-                    <small>%s</small>
+                    <small>Input Date: %s</small>
+                    <h3>Category: %s</h3>
+                    <small>DueDate: %s</small>
                     <div> <input type="button" value="edit" onclick="window.location.href=`edit.php?id=%d`">  <span> &emsp; </span> 
                     <input type="button" value="delete" onclick="window.location.href=`delete.php?id=%d`"> </div>
                 </div>
